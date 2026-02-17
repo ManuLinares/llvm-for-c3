@@ -142,7 +142,7 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v6
         with:
-          name: ${{ matrix.target.id }}-${{ matrix.llvm_version }}-${{ matrix.llvm_build_type }}
+          name: ${{ matrix.target.id }}__${{ matrix.llvm_version }}__${{ matrix.llvm_build_type }}
           path: dist
           if-no-files-found: error
           retention-days: 1
@@ -164,8 +164,11 @@ jobs:
           mkdir -p release_dist
           for dir in artifacts/*; do
             dirname=$(basename "$dir")
-            id=$(echo "$dirname" | cut -d'-' -f1,2)
-            type=$(echo "$dirname" | rev | cut -d'-' -f1 | rev)
+            # Parse the directory name: <ID>__<VERSION>__<TYPE>
+            type=${dirname##*__}
+            remainder=${dirname%__*}
+            version=${remainder##*__}
+            id=${remainder%__*}
             suffix=""
             if [ "$type" = "Debug" ]; then
               suffix="-dbg"
