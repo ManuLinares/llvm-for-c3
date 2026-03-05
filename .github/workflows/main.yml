@@ -57,7 +57,7 @@ jobs:
         run: |
           apk add --no-cache \
             build-base bash git cmake ninja python3 linux-headers \
-            zlib-dev curl-dev libffi-dev
+            zlib-dev zlib-static zstd-dev zstd-static curl-dev libffi-dev
 
       - name: Free Disk Space (Linux glibc only)
         if: startsWith(matrix.target.id, 'linux-') && matrix.target.id != 'linux-amd64-musl'
@@ -93,7 +93,7 @@ jobs:
         if: startsWith(matrix.target.id, 'linux-') && matrix.target.id != 'linux-amd64-musl'
         run: |
           sudo apt-get update
-          sudo apt-get install -y ninja-build
+          sudo apt-get install -y ninja-build zlib1g-dev libzstd-dev
 
       - name: Install cross-compilation tools (RISCV)
         if: matrix.target.id == 'linux-riscv64'
