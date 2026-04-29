@@ -37,7 +37,11 @@ if (-not (Test-Path -Path "llvm-project" -PathType Container)) {
         git clone -b $LLVM_REF --single-branch --depth=1 "$LLVM_REPO_URL" llvm-project
     }
     if (-not $?) {
-        Write-Error "Error: Could not find branch 'release/$LLVM_VERSION' or tag 'llvmorg-$LLVM_VERSION'"
+        $LLVM_REF = "$LLVM_VERSION"
+        git clone -b $LLVM_REF --single-branch --depth=1 "$LLVM_REPO_URL" llvm-project
+    }
+    if (-not $?) {
+        Write-Error "Error: Could not find branch 'release/$LLVM_VERSION', tag 'llvmorg-$LLVM_VERSION', or branch/tag '$LLVM_VERSION'"
         exit 1
     }
 } else {

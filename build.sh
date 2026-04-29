@@ -26,8 +26,10 @@ then
 		LLVM_REF="release/$LLVM_VERSION"
 	elif git clone -b "llvmorg-$LLVM_VERSION" --single-branch --depth=1 "$LLVM_REPO_URL" llvm-project; then
 		LLVM_REF="llvmorg-$LLVM_VERSION"
+	elif git clone -b "$LLVM_VERSION" --single-branch --depth=1 "$LLVM_REPO_URL" llvm-project; then
+		LLVM_REF="$LLVM_VERSION"
 	else
-		echo "Error: Could not find branch 'release/$LLVM_VERSION' or tag 'llvmorg-$LLVM_VERSION'"
+		echo "Error: Could not find branch 'release/$LLVM_VERSION', tag 'llvmorg-$LLVM_VERSION', or branch/tag '$LLVM_VERSION'"
 		exit 1
 	fi
 fi
