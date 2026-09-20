@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, espressif ]
     tags: [ 'llvm_*' ]
     paths-ignore:
       - README.md
@@ -10,8 +10,8 @@ on:
   workflow_dispatch:
 
 env:
-  LLVM_VERSION: "23.1.1"
-  LLVM_REPO_URL: "https://github.com/llvm/llvm-project.git"
+  LLVM_VERSION: "esp-22.1.4_20260825"
+  LLVM_REPO_URL: "https://github.com/espressif/llvm-project.git"
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        llvm_version: ["23.1.1"]
+        llvm_version: ["esp-22.1.4_20260825"]
         llvm_build_type: ["Release", "Debug"]
         target:
           - id: "linux-amd64"
