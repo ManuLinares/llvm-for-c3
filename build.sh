@@ -58,6 +58,12 @@ if [[ "$LLVM_CROSS" == "windows-aarch64" ]]; then
     perl -pi -e 's|endforeach\(pat\)|endforeach(pat)\nendif()|' compiler-rt/lib/builtins/CMakeLists.txt
 fi
 
+# Patch RISCVInstrInfo for MSVC (cl.exe) compatibility (2026-09-20 Manu) (for https://github.com/espressif/llvm-project ... esp-22.1.4_20260825)
+if [[ "$OS_TYPE" == "windows" ]]; then
+    echo "Applying MSVC RISC-V compatibility patches to llvm..."
+    perl -pi -e 's|MCRegister\(SrcReg\)|SrcReg.asMCReg()|g' llvm/lib/Target/RISCV/RISCVInstrInfo.cpp
+fi
+
 # Apply pdb-patch (Windows-only, only for non-Release builds)
 if [[ "$OS_TYPE" == "windows" && "$4" == "Debug" ]]; then
     echo "Applying PDB patch for Windows Debug build..."
